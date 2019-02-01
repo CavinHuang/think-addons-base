@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "cz": "git add . && git cz"
+    "cz": "git add . && git cz",
+    "log": "conventional-changelog --config node_modules/jimi-web-changelog/lib/log -i CHANGELOG.md -s -r 0",
+    "v": "standard-version -r minor"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,8 @@
   "homepage": "https://github.com/CavinHuang/think-addons-base#readme",
   "devDependencies": {
     "commitizen": "^3.0.5",
+    "commitlint": "^7.5.0",
+    "conventional-changelog-cli": "^2.0.11",
     "jimi-web-changelog": "^0.1.6"
   }
 }
