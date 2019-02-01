@@ -2,11 +2,12 @@
 
 namespace app\common\behavior;
 
-use system\addon\AddonTools;
 use think\facade\App;
 use think\facade\Cache;
 use think\facade\Config;
+use think\facade\Cookie;
 use think\facade\Hook;
+use think\facade\Lang;
 use think\facade\Route;
 use think\Loader;
 
@@ -19,14 +20,43 @@ use think\Loader;
  * @AUTHOR  cavinHuang
  */
 class AddonInitialize {
-
+  
+  /**
+   * 执行
+   *
+   * @param \think\Request $request
+   * @author cavinHUang
+   * @date   2019/2/1 0001 下午 2:47
+   *
+   */
   public function run () {
     
     // 初始化常量
     $this->initConst();
     
+    // 初始化项目配置
+    $this->init();
+    
+    // 初始化自定义包
+    $this->loadLibs();
+    
     // 初始化addon
     $this->initAddons();
+  }
+  
+  /**
+   * 导入自定义包
+   *
+   * @param \think\Request $request
+   * @author cavinHUang
+   * @date   2019/2/1 0001 下午 2:46
+   *
+   */
+  public function loadLibs () {
+    // 加载插件语言包
+    Lang::load([
+      env('app_path') . 'common' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . app('request')->langset() . DIRECTORY_SEPARATOR . 'addon.php',
+    ]);
   }
   
   /**
@@ -40,8 +70,37 @@ class AddonInitialize {
     
     // 插件目录
     defined('ADDON_PATH') || define('ADDON_PATH', env('root_path') . 'addons' . DIRECTORY_SEPARATOR);
+    
   }
   
+  /**
+   * 项目配置初始化
+   *
+   * @param \think\Request $request
+   * @author cavinHUang
+   * @date   2019/2/1 0001 下午 2:46
+   *
+   */
+  public function init () {
+    // 如果是trace模式且Ajax的情况下关闭trace
+    if (Config::get('app_trace') && app('request')->isAjax())
+    {
+      Config::set('app_trace', false);
+    }
+    // 切换多语言
+    if (Config::get('lang_switch_on') && app('request')->get('lang'))
+    {
+      Cookie::set('think_var', app('request')->get('lang'));
+    }
+  }
+  
+  /**
+   * 初始化插件
+   *
+   * @author cavinHUang
+   * @date   2019/2/1 0001 下午 2:37
+   *
+   */
   public function initAddons () {
   
     Route::any('addons/:addon/[:controller]/[:action]', "\\system\\addon\\Route@execute");

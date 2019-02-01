@@ -12,6 +12,34 @@
 // 应用公共文件
 // 公共助手函数
 
+/**
+ * 打印输出数据到文件
+ *
+ * @param mixed       $data  输出的数据
+ * @param bool        $force 强制替换
+ * @param string|null $file
+ */
+function p($data, $force = false, $file = null)
+{
+  is_null($file) && $file = env('runtime_path') . date('Ymd') . '.txt';
+  $str = (is_string($data) ? $data : (is_array($data) || is_object($data)) ? print_r($data, true) : var_export($data, true)) . PHP_EOL;
+  $force ? file_put_contents($file, $str) : file_put_contents($file, $str, FILE_APPEND);
+}
+
+/**
+ *
+ * @param  mixed ...$
+ * @author cavinHUang
+ * @date   2018/10/8 0008 下午 2:45
+ **/
+function dd(...$args)
+{
+  foreach ($args as $x) {
+    dump($x);
+  }
+  exit;
+}
+
 if (!function_exists('__')) {
   
   /**

@@ -1,0 +1,29 @@
+{
+  "name": "think-addon-base",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cz": "git add . && git cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CavinHuang/think-addons-base.git"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/jimi-web-changelog/lib/cz"
+    }
+  },
+  "author": "cavinHuang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CavinHuang/think-addons-base/issues"
+  },
+  "homepage": "https://github.com/CavinHuang/think-addons-base#readme",
+  "devDependencies": {
+    "commitizen": "^3.0.5",
+    "jimi-web-changelog": "^0.1.6"
+  }
+}
