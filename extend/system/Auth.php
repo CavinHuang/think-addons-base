@@ -132,21 +132,39 @@ class Auth {
    */
   public function userInstance()
   {
-    if (Config::get('auth.user')) {
-      $userPath = Config::get('auth.user');
-      if (class_exists($userPath)) {
-        $this->userInstance = new $userPath();
+    if ($this->config['user']) {
+      $userPath = $this->config['user'];
+    } else {
+      if (Config::get('auth.user')) {
+        $userPath = Config::get('auth.user');
+      }
+    }
+    if (class_exists($userPath)) {
+      $this->userInstance = new $userPath();
+    }
+    
+    if ($this->config['userRule']) {
+      $userRulePath = $this->config['userRule'];
+    } else {
+      if (Config::get('auth.userRule')) {
+        $userRulePath = Config::get('auth.userRule');
       }
     }
     
-    if (Config::get('auth.userRule')) {
-      $userRulePath = Config::get('auth.userRule');
+    if (file_exists($userRulePath)) {
       $this->userRuleInstance = new $userRulePath();
     }
     
-    if (Config::get('auth.userProfile')) {
-      $userRulePath = Config::get('auth.userProfile');
-      $this->userProfile = new $userRulePath();
+    if ($this->config['userProfile']) {
+      $userProfile = $this->config['userProfile'];
+    } else {
+      if (Config::get('auth.userProfile')) {
+        $userProfile = Config::get('auth.userProfile');
+      }
+    }
+    
+    if (file_exists($userProfile)) {
+      $this->userProfile = new $userProfile();
     }
   }
   
@@ -300,7 +318,7 @@ class Auth {
     
       return TRUE;
     }
-    catch (Exception $e)
+    catch (\Exception $e)
     {
       $this->setError($e->getMessage());
       Db::rollback();

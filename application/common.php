@@ -62,3 +62,19 @@ if (!function_exists('__')) {
   }
   
 }
+
+
+if (!function_exists('adminAuth')) {
+  
+  /**
+   * admin auth 实例
+   *
+   * @return \system\Auth
+   * @author cavinHUang
+   * @date   2019/2/2 0002 下午 8:32
+   *
+   */
+  function adminAuth () {
+    return \system\Auth::instance(config('admin.auth'));
+  }
+}
